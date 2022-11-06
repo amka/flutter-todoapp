@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:isar/isar.dart';
-import 'package:todoapp/src/services/todo.dart';
+import 'package:line_icons/line_icon.dart';
 
 import '../models/todo.dart';
+import '../services/todo.dart';
 
 class TodoList extends StatefulWidget {
   TodoList({super.key, this.onTodoTap});
@@ -46,34 +46,42 @@ class _TodoListState extends State<TodoList> {
                 final item = items![index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    tileColor: item.state == TodoState.done
-                        ? Theme.of(context)
-                            .colorScheme
-                            .surfaceVariant
-                            .withAlpha(78)
-                        : Theme.of(context).colorScheme.surfaceVariant,
-                    onTap: widget.onTodoTap != null
-                        ? () => widget.onTodoTap!(item.id!)
-                        : null,
-                    leading: Checkbox(
-                      value: item.state == TodoState.done,
-                      onChanged: (bool? value) async {
-                        await toggleDoneState(item.id!);
-                      },
-                    ),
-                    title: Text(
-                      item.title,
-                      style: item.state == TodoState.done
-                          ? const TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                            )
-                          : null,
+                  child: Container(
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () async =>
+                              await toggleDoneState(item.id!),
+                          icon: item.state == TodoState.done
+                              ? LineIcon.checkSquare()
+                              : LineIcon.square(),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: widget.onTodoTap != null
+                                ? () => widget.onTodoTap!(item.id!)
+                                : null,
+                            child: Text(
+                              item.title,
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                              style: item.state == TodoState.done
+                                  ? const TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                    )
+                                  : null,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
+                  // tileColor: item.state == TodoState.done
+                  //     ? Theme.of(context)
+                  //         .colorScheme
+                  //         .surfaceVariant
+                  //         .withAlpha(78)
+                  //     : Theme.of(context).colorScheme.surfaceVariant,
                 );
               },
             );

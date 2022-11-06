@@ -25,6 +25,10 @@ class TodoService extends GetxService {
     return await isar.todos.get(todoId);
   }
 
+  Todo? getTodoSync(int todoId) {
+    return isar.todos.getSync(todoId);
+  }
+
   Future<int> putTodo(Todo todo) async {
     todo.createdAt = DateTime.now();
     todo.updatedAt = DateTime.now();

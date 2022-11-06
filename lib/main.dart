@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'TodoApp',
       theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color.fromARGB(255, 28, 75, 125),
+        // useMaterial3: true,
+        colorSchemeSeed: const Color(0xFF00624E),
         textTheme: GoogleFonts.comfortaaTextTheme(),
         appBarTheme: AppBarTheme.of(context).copyWith(
           toolbarTextStyle: GoogleFonts.berkshireSwash(),
