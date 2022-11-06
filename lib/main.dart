@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'src/router.dart';
 
@@ -17,6 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: const Color.fromARGB(255, 28, 75, 125),
+        textTheme: GoogleFonts.comfortaaTextTheme(),
+        appBarTheme: AppBarTheme.of(context).copyWith(
+          toolbarTextStyle: GoogleFonts.berkshireSwash(),
+        ),
       ),
       routerConfig: router,
     );
