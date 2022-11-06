@@ -18,7 +18,7 @@ class TodoService extends GetxService {
   }
 
   Future<List<Todo>> getTodos() async {
-    return await isar.todos.where().findAll();
+    return await isar.todos.where().sortByState().findAll();
   }
 
   Future<Todo?> getTodo(int todoId) async {
@@ -34,6 +34,20 @@ class TodoService extends GetxService {
   Future<int> updateTodo(Todo todo) async {
     todo.updatedAt = DateTime.now();
     return await isar.writeTxn(() async => await isar.todos.put(todo));
+  }
+
+  Future toggleDoneState(int todoId) async {
+    final todo = await getTodo(todoId);
+    if (todo != null) {
+      switch (todo.state) {
+        case TodoState.open:
+          todo.state = TodoState.done;
+          break;
+        default:
+          todo.state = TodoState.open;
+      }
+      await putTodo(todo);
+    }
   }
 
   Future<bool> deleteTodo(int todoId) async {

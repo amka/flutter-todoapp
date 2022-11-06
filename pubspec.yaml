@@ -38,6 +38,7 @@ dependencies:
   isar_flutter_libs: ^3.0.2
 
   google_fonts: ^3.0.1
+  line_icons: ^2.0.1
 
 dev_dependencies:
   flutter_test:

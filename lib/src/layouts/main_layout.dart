@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class MainLayout extends StatefulWidget {
   MainLayout({super.key, required this.child});
@@ -16,7 +17,9 @@ class _MainLayoutState extends State<MainLayout> {
       appBar: AppBar(
         title: const Text('TodoApp'),
       ),
-      body: widget.child,
+      body: SafeArea(
+        child: widget.child,
+      ),
     );
   }
 }

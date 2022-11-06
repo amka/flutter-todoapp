@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,39 +21,43 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: TodoList(
-                onTodoTap: (int todoId) async =>
-                    await showTodoPopup(context, todoId),
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: TodoList(
+              onTodoTap: (int todoId) async =>
+                  await showTodoPopup(context, todoId),
             ),
-            TextField(
-              controller: todoInputController,
-              onSubmitted: (value) async {
-                final todo = Todo(todoInputController.text);
-                try {
-                  await todoService.putTodo(todo);
-                  todoInputController.text = '';
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Cannot add todo')),
-                  );
-                }
-              },
-              decoration: InputDecoration(
-                hintText: 'Put todo here',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+          ),
+          Container(
+            color: Theme.of(context).colorScheme.surface,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TextField(
+                controller: todoInputController,
+                onSubmitted: (value) async {
+                  final todo = Todo(todoInputController.text);
+                  try {
+                    await todoService.putTodo(todo);
+                    todoInputController.text = '';
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Cannot add todo')),
+                    );
+                  }
+                },
+                decoration: InputDecoration(
+                  hintText: 'Put todo here',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -62,20 +68,19 @@ class _HomePageState extends State<HomePage> {
       Scaffold.of(context).showBottomSheet(
         (context) => Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Expanded(
-            child: Column(
-              children: [
-                Text(
-                  '${todo?.title}',
-                  style: const TextStyle(fontWeight: FontWeight.w400),
-                ),
-              ],
-            ),
+          child: Column(
+            children: [
+              Text(
+                '${todo?.title}',
+                style: const TextStyle(fontWeight: FontWeight.w400),
+              ),
+            ],
           ),
         ),
-        elevation: 1,
+        elevation: 4,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         constraints: BoxConstraints(
-          minWidth: 360,
+          minWidth: double.infinity,
           maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
+import 'package:todoapp/src/services/todo.dart';
 
 import '../models/todo.dart';
 
@@ -14,7 +15,7 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  Isar isar = Get.find();
+  TodoService todoService = Get.find();
   late Stream<void> todoChanged;
   List<Todo>? todos;
   bool loading = false;
@@ -22,7 +23,7 @@ class _TodoListState extends State<TodoList> {
   @override
   void initState() {
     super.initState();
-    todoChanged = isar.todos.watchLazy();
+    todoChanged = todoService.isar.todos.watchLazy();
     todoChanged.listen((event) {
       setState(() {
         print('Todos changed');
@@ -47,11 +48,29 @@ class _TodoListState extends State<TodoList> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    tileColor: Theme.of(context).colorScheme.surfaceVariant,
+                    tileColor: item.state == TodoState.done
+                        ? Theme.of(context)
+                            .colorScheme
+                            .surfaceVariant
+                            .withAlpha(78)
+                        : Theme.of(context).colorScheme.surfaceVariant,
                     onTap: widget.onTodoTap != null
                         ? () => widget.onTodoTap!(item.id!)
                         : null,
-                    title: Text(item.title),
+                    leading: Checkbox(
+                      value: item.state == TodoState.done,
+                      onChanged: (bool? value) async {
+                        await toggleDoneState(item.id!);
+                      },
+                    ),
+                    title: Text(
+                      item.title,
+                      style: item.state == TodoState.done
+                          ? const TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                            )
+                          : null,
+                    ),
                   ),
                 );
               },
@@ -65,6 +84,10 @@ class _TodoListState extends State<TodoList> {
   }
 
   Future<List<Todo>?> loadTodos() async {
-    return await isar.todos.where().findAll();
+    return await todoService.getTodos();
+  }
+
+  Future toggleDoneState(int todoId) async {
+    await todoService.toggleDoneState(todoId);
   }
 }
