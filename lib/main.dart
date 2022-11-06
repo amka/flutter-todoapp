@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:isar/isar.dart';
 
+import 'src/services/todo.dart';
+import 'src/models/todo.dart';
 import 'src/router.dart';
 
-void main() {
+void main() async {
+  final isar = await Isar.open([TodoSchema]);
+  Get.put(isar);
+  Get.lazyPut(() => TodoService());
+
   runApp(const MyApp());
 }
 
