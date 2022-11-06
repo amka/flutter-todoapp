@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
           toolbarTextStyle: GoogleFonts.berkshireSwash(),
         ),
       ),
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
     );
   }
