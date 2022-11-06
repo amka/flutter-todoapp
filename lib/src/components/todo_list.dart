@@ -25,9 +25,11 @@ class _TodoListState extends State<TodoList> {
     super.initState();
     todoChanged = todoService.isar.todos.watchLazy();
     todoChanged.listen((event) {
-      setState(() {
-        print('Todos changed');
-      });
+      if (mounted) {
+        setState(() {
+          debugPrint('Todos changed');
+        });
+      }
     });
   }
 
