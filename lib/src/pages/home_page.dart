@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   TodoService todoService = Get.find();
 
   TextEditingController todoInputController = TextEditingController();
+  bool showResolved = false;
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +34,21 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
             label: 'Todo',
             icon: LineIcon.alternateList(),
           ),
           BottomNavigationBarItem(
-            label: 'Done',
+            label: 'Resolved',
             icon: LineIcon.envelopeSquare(),
           )
         ],
+        onTap: (value) => setState(() {
+          showResolved = value == 1;
+          currentIndex = value;
+        }),
       ),
       body: SafeArea(
         child: Padding(
@@ -50,6 +57,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: TodoList(
+                  showResolved: showResolved,
                   onTodoTap: (int todoId) =>
                       context.beamToNamed('/todo/$todoId'),
                 ),

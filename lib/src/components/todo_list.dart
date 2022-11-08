@@ -4,9 +4,12 @@ import 'package:line_icons/line_icon.dart';
 
 import '../models/todo.dart';
 import '../services/todo.dart';
+import 'todos_empty_state.dart';
 
 class TodoList extends StatefulWidget {
-  TodoList({super.key, this.onTodoTap});
+  bool showResolved;
+
+  TodoList({super.key, this.onTodoTap, this.showResolved = false});
 
   Function(int)? onTodoTap;
 
@@ -40,9 +43,12 @@ class _TodoListState extends State<TodoList> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final items = snapshot.data;
+            if (items == null || items.isEmpty) {
+              return const TodosEmptyState();
+            }
             return ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              itemCount: items?.length,
+              itemCount: items!.length,
               itemBuilder: (context, index) {
                 final item = items![index];
                 return Padding(
@@ -97,12 +103,6 @@ class _TodoListState extends State<TodoList> {
                       ],
                     ),
                   ),
-                  // tileColor: item.state == TodoState.done
-                  //     ? Theme.of(context)
-                  //         .colorScheme
-                  //         .surfaceVariant
-                  //         .withAlpha(78)
-                  //     : Theme.of(context).colorScheme.surfaceVariant,
                 );
               },
             );
@@ -115,7 +115,9 @@ class _TodoListState extends State<TodoList> {
   }
 
   Future<List<Todo>?> loadTodos() async {
-    return await todoService.getTodos();
+    return widget.showResolved
+        ? await todoService.getDoneTodos()
+        : await todoService.getTodos();
   }
 
   Future toggleDoneState(int todoId) async {

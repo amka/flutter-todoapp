@@ -18,7 +18,19 @@ class TodoService extends GetxService {
   }
 
   Future<List<Todo>> getTodos() async {
+    return await isar.todos
+        .filter()
+        .not()
+        .stateEqualTo(TodoState.done)
+        .findAll();
+  }
+
+  Future<List<Todo>> getAllTodos() async {
     return await isar.todos.where().sortByState().findAll();
+  }
+
+  Future<List<Todo>> getDoneTodos() async {
+    return await isar.todos.filter().stateEqualTo(TodoState.done).findAll();
   }
 
   Future<Todo?> getTodo(int todoId) async {
