@@ -41,36 +41,56 @@ class _TodoListState extends State<TodoList> {
           if (snapshot.hasData) {
             final items = snapshot.data;
             return ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               itemCount: items?.length,
               itemBuilder: (context, index) {
                 final item = items![index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Container(
+                  child: InkWell(
+                    onTap: widget.onTodoTap != null
+                        ? () => widget.onTodoTap!(item.id!)
+                        : null,
+                    borderRadius: BorderRadius.circular(12),
                     child: Row(
                       children: [
                         IconButton(
                           onPressed: () async =>
                               await toggleDoneState(item.id!),
-                          icon: item.state == TodoState.done
+                          icon: item.resolved
                               ? LineIcon.checkSquare()
                               : LineIcon.square(),
+                          color: item.resolved
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withAlpha(100)
+                              : null,
+                          splashRadius: 6,
                         ),
                         Expanded(
-                          child: InkWell(
-                            onTap: widget.onTodoTap != null
-                                ? () => widget.onTodoTap!(item.id!)
-                                : null,
-                            child: Text(
-                              item.title,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: item.state == TodoState.done
-                                  ? const TextStyle(
-                                      decoration: TextDecoration.lineThrough,
-                                    )
-                                  : null,
+                          child: SizedBox(
+                            height: 48,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  item.title,
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                  style: item.resolved
+                                      ? TextStyle(
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withAlpha(100))
+                                      : null,
+                                ),
+                              ),
                             ),
                           ),
                         )

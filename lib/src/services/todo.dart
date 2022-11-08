@@ -43,13 +43,7 @@ class TodoService extends GetxService {
   Future toggleDoneState(int todoId) async {
     final todo = await getTodo(todoId);
     if (todo != null) {
-      switch (todo.state) {
-        case TodoState.open:
-          todo.state = TodoState.done;
-          break;
-        default:
-          todo.state = TodoState.open;
-      }
+      todo.state = todo.resolved ? TodoState.open : TodoState.done;
       await putTodo(todo);
     }
   }

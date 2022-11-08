@@ -99,12 +99,14 @@ class _TodoPageState extends State<TodoPage> {
                 ),
               ),
               SizedBox(
+                height: 48,
                 child: MaterialButton(
                   onPressed: () => context.beamToNamed('/'),
                   color: Theme.of(context).colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  elevation: 0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

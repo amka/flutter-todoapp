@@ -22,6 +22,8 @@ class Todo {
   late DateTime updatedAt;
   DateTime? deadline;
 
+  bool get resolved => state == TodoState.done;
+
   Todo(
     this.title, {
     this.description,
