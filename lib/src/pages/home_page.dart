@@ -1,8 +1,6 @@
-import 'dart:ui';
-
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icon.dart';
 
 import '../components/todo_list.dart';
@@ -28,8 +26,20 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Todos'),
         actions: [
           IconButton(
-            onPressed: () => context.goNamed('settings'),
+            onPressed: () => context.beamToNamed('/settings'),
             icon: LineIcon.cog(),
+          )
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            label: 'Todo',
+            icon: LineIcon.alternateList(),
+          ),
+          BottomNavigationBarItem(
+            label: 'Done',
+            icon: LineIcon.envelopeSquare(),
           )
         ],
       ),
@@ -40,14 +50,14 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: TodoList(
-                  onTodoTap: (int todoId) async =>
-                      await showTodoPopup(context, todoId),
+                  onTodoTap: (int todoId) =>
+                      context.beamToNamed('/todo/$todoId'),
                 ),
               ),
               Container(
                 color: Theme.of(context).colorScheme.surface,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   child: TextField(
                     controller: todoInputController,
                     onSubmitted: (value) async {
@@ -75,31 +85,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  Future showTodoPopup(BuildContext context, int todoId) async {
-    context.goNamed('todo', params: {'todoId': '$todoId'});
-    // final todo = await todoService.getTodo(todoId);
-    // if (mounted) {
-    //   Scaffold.of(context).showBottomSheet(
-    //     (context) => Padding(
-    //       padding: const EdgeInsets.all(12.0),
-    //       child: Column(
-    //         children: [
-    //           Text(
-    //             '${todo?.title}',
-    //             style: const TextStyle(fontWeight: FontWeight.w400),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //     elevation: 4,
-    //     backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-    //     constraints: BoxConstraints(
-    //       minWidth: double.infinity,
-    //       maxHeight: MediaQuery.of(context).size.height * 0.8,
-    //     ),
-    //   );
-    // }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -13,11 +12,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
-        leading: BackButton(
-          onPressed: () =>
-              context.canPop() ? context.pop() : context.goNamed('home'),
-        ),
+        title: const Text('Settings'),
       ),
       body: const Center(
         child: Text('Settings'),

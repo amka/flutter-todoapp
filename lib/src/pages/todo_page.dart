@@ -1,9 +1,6 @@
-import 'dart:ui';
-
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 import 'package:line_icons/line_icon.dart';
 
 import '../services/todo.dart';
@@ -39,10 +36,6 @@ class _TodoPageState extends State<TodoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Todo'),
-        leading: BackButton(
-          onPressed: () =>
-              context.canPop() ? context.pop() : context.goNamed('home'),
-        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -107,7 +100,7 @@ class _TodoPageState extends State<TodoPage> {
               ),
               SizedBox(
                 child: MaterialButton(
-                  onPressed: () => context.goNamed('home'),
+                  onPressed: () => context.beamToNamed('/'),
                   color: Theme.of(context).colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

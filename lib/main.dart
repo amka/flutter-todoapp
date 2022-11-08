@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,11 +13,11 @@ void main() async {
   Get.put(isar);
   Get.lazyPut(() => TodoService());
 
-  runApp(const MyApp());
+  runApp(const TodoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class TodoApp extends StatelessWidget {
+  const TodoApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -25,14 +26,20 @@ class MyApp extends StatelessWidget {
       title: 'TodoApp',
       theme: ThemeData(
         // useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF00624E),
+        colorSchemeSeed: Color(0xff1e63ec),
         textTheme: GoogleFonts.comfortaaTextTheme(),
         appBarTheme: AppBarTheme.of(context).copyWith(
           toolbarTextStyle: GoogleFonts.berkshireSwash(),
         ),
       ),
       debugShowCheckedModeBanner: false,
-      routerConfig: router,
+      // routerConfig: router,
+      routeInformationParser: BeamerParser(),
+      routerDelegate: routerDelegate,
+      backButtonDispatcher: BeamerBackButtonDispatcher(
+        delegate: routerDelegate,
+        alwaysBeamBack: true,
+      ),
     );
   }
 }

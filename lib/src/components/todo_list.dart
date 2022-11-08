@@ -41,6 +41,7 @@ class _TodoListState extends State<TodoList> {
           if (snapshot.hasData) {
             final items = snapshot.data;
             return ListView.builder(
+              padding: EdgeInsets.symmetric(vertical: 12),
               itemCount: items?.length,
               itemBuilder: (context, index) {
                 final item = items![index];
