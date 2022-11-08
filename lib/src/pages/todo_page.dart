@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icon.dart';
 
+import '../components/todo_state_checkbox.dart';
 import '../services/todo.dart';
 import '../models/todo.dart';
 
@@ -72,24 +73,30 @@ class _TodoPageState extends State<TodoPage> {
                       const SizedBox(height: 12),
                       Row(
                         children: [
-                          IconButton(
+                          TodoStateCheckbox(
+                            checked: todo!.resolved,
                             onPressed: () async {
-                              await todoService.toggleDoneState(widget.todoId);
+                              await todoService.toggleDoneState(todo!.id!);
                               setState(() {
-                                todo!.state = (todo!.state != TodoState.done)
-                                    ? TodoState.done
-                                    : TodoState.open;
+                                todo!.state = todo!.resolved
+                                    ? TodoState.open
+                                    : TodoState.done;
                               });
                             },
-                            icon: todo!.state == TodoState.done
-                                ? LineIcon.checkSquare()
-                                : LineIcon.square(),
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Text(
-                              'Done',
+                              'Is Done',
                               overflow: TextOverflow.fade,
                               softWrap: false,
+                              style: todo!.resolved
+                                  ? TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withAlpha(100))
+                                  : null,
                             ),
                           )
                         ],
