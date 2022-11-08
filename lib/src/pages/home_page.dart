@@ -25,7 +25,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todos'),
+        title: Row(
+          children: [
+            const Text('TodoHippo'),
+            const SizedBox(width: 4),
+            LineIcon.hippo(),
+          ],
+        ),
         actions: [
           IconButton(
             onPressed: () => context.beamToNamed('/settings'),

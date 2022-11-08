@@ -23,7 +23,7 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'TodoApp',
+      title: 'TodoHippo',
       theme: ThemeData(
         // useMaterial3: true,
         colorSchemeSeed: Color(0xff1e63ec),
