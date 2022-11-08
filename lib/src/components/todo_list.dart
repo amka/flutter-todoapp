@@ -48,59 +48,84 @@ class _TodoListState extends State<TodoList> {
             }
             return ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              itemCount: items!.length,
+              itemCount: items.length,
               itemBuilder: (context, index) {
-                final item = items![index];
+                final item = items[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: InkWell(
-                    onTap: widget.onTodoTap != null
-                        ? () => widget.onTodoTap!(item.id!)
-                        : null,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () async =>
-                              await toggleDoneState(item.id!),
-                          icon: item.resolved
-                              ? LineIcon.checkSquare()
-                              : LineIcon.square(),
-                          color: item.resolved
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withAlpha(100)
-                              : null,
-                          splashRadius: 6,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: 48,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  item.title,
-                                  overflow: TextOverflow.fade,
-                                  softWrap: false,
-                                  style: item.resolved
-                                      ? TextStyle(
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface
-                                              .withAlpha(100))
-                                      : null,
+                  child: Dismissible(
+                    key: Key('${item.id}'),
+                    background: Container(
+                      color: Colors.red,
+                      child: LineIcon.trash(color: Colors.white),
+                    ),
+                    onDismissed: (direction) async {
+                      if (direction == DismissDirection.endToStart) {
+                        // Remove from DB
+                        await todoService.deleteTodo(item.id!);
+                        setState(() {
+                          items.removeAt(index);
+                        });
+
+                        // Then show a snackbar.
+                        if (mounted) {
+                          var messenger = ScaffoldMessenger.of(context);
+                          messenger.clearSnackBars();
+                          messenger.showSnackBar(
+                            SnackBar(content: Text('${item.title} dismissed')),
+                          );
+                        }
+                      }
+                    },
+                    child: InkWell(
+                      onTap: widget.onTodoTap != null
+                          ? () => widget.onTodoTap!(item.id!)
+                          : null,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async =>
+                                await toggleDoneState(item.id!),
+                            icon: item.resolved
+                                ? LineIcon.checkSquare()
+                                : LineIcon.square(),
+                            color: item.resolved
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withAlpha(100)
+                                : null,
+                            splashRadius: 6,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 48,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    item.title,
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                    style: item.resolved
+                                        ? TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withAlpha(100))
+                                        : null,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );

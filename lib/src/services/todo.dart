@@ -61,6 +61,6 @@ class TodoService extends GetxService {
   }
 
   Future<bool> deleteTodo(int todoId) async {
-    return await isar.todos.delete(todoId);
+    return await isar.writeTxn(() async => await isar.todos.delete(todoId));
   }
 }
