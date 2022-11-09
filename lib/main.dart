@@ -26,10 +26,11 @@ class TodoApp extends StatelessWidget {
       title: 'TodoHippo',
       theme: ThemeData(
         // useMaterial3: true,
-        colorSchemeSeed: Color(0xff1e63ec),
+        colorSchemeSeed: const Color(0xff9d9df8), // Color(0xFFEC511E),
         textTheme: GoogleFonts.comfortaaTextTheme(),
         appBarTheme: AppBarTheme.of(context).copyWith(
           toolbarTextStyle: GoogleFonts.berkshireSwash(),
+          elevation: 4,
         ),
       ),
       debugShowCheckedModeBanner: false,

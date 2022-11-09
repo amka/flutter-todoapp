@@ -27,17 +27,32 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Row(
           children: [
-            const Text('TodoHippo'),
+            const Text(
+              'TodoHippo',
+              style: TextStyle(color: Colors.white),
+            ),
             const SizedBox(width: 4),
-            LineIcon.hippo(),
+            LineIcon.hippo(color: Colors.white),
           ],
         ),
         actions: [
           IconButton(
             onPressed: () => context.beamToNamed('/settings'),
             icon: LineIcon.cog(),
-          )
+          ),
+          SizedBox(width: 8),
         ],
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 219, 79, 224),
+                Colors.blue,
+              ],
+              transform: GradientRotation(1.2),
+            ),
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

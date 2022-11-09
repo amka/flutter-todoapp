@@ -72,7 +72,7 @@ class _TodoListState extends State<TodoList> {
                           var messenger = ScaffoldMessenger.of(context);
                           messenger.clearSnackBars();
                           messenger.showSnackBar(
-                            SnackBar(content: Text('${item.title} dismissed')),
+                            SnackBar(content: Text('${item.title} deleted.')),
                           );
                         }
                       }
